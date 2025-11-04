@@ -17,6 +17,20 @@ body{
   background: linear-gradient(180deg, var(--cetacean-blue) 0%, var(--space-cadet) 100%);
   color: #e6e9ff;
   -webkit-font-smoothing:antialiased;
+  /* Sticky footer setup */
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Main content should grow to push footer down */
+main{
+  flex: 1 0 auto;
+}
+
+/* Footer should stay at bottom */
+footer{
+  flex-shrink: 0;
 }
 
 /* Navbar styles */
