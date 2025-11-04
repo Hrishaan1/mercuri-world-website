@@ -4,66 +4,97 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Mercuri — About</title>
+
+  <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="assets/css/styles.css">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="/assets/css/styles.css">
 </head>
-<body class="min-h-screen flex flex-col bg-[#070B34] text-white">
+<body class="min-h-screen bg-[#070B34] text-white">
 
   <!-- Navbar -->
   <div id="navbar"></div>
 
-  <main class="flex-grow pt-20 container-max px-4 space-y-12">
-    <section>
-      <h1 class="text-4xl font-bold text-center mb-6">About Mercuri</h1>
+  <main class="pt-20 container-max space-y-16 px-4">
 
-      <div class="max-w-4xl mx-auto space-y-8">
+    <!-- Hero Section -->
+    <section class="text-center py-12">
+      <h1 class="text-4xl font-bold mb-4">About Mercuri</h1>
+      <p class="text-[#b4c4f8] max-w-3xl mx-auto">
+        Learn about our mission, story, and the ways you can get involved with our global neuroscience community.
+      </p>
+    </section>
+
+    <!-- Constitution -->
+    <section class="bg-white/5 p-6 rounded-lg max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold text-white mb-3">Our Constitution</h2>
+      <p class="text-[#b4c4f8] mb-4">
+        Download or review Mercuri's constitution here:
+      </p>
+      <!-- Placeholder for upload/download link -->
+      <a href="/assets/docs/mercuri-constitution.pdf" class="inline-block px-4 py-2 bg-[#4e65cb] rounded hover:bg-[#3b4db0] transition" target="_blank">
+        View / Download Constitution
+      </a>
+    </section>
+
+    <!-- Mission & Global Impact -->
+    <section class="bg-white/5 p-6 rounded-lg max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold text-white mb-3">Mission & Global Impact</h2>
+      <p class="text-[#b4c4f8]">
+        Mercuri is dedicated to fostering collaboration and innovation in neuroscience education globally. Our mission is to provide students and researchers the resources, mentorship, and platform to explore the frontiers of cognitive science, creating meaningful impact in our communities and worldwide.
+      </p>
+    </section>
+
+    <!-- Mercuri's Story -->
+    <section class="bg-white/5 p-6 rounded-lg max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold text-white mb-3">Our Story</h2>
+      <p class="text-[#b4c4f8]">
+        Founded by a group of passionate students, Mercuri began as a small initiative to connect like-minded peers interested in neuroscience. Over time, we have grown into a global network fostering research, collaboration, and real-world impact in the scientific community.
+      </p>
+    </section>
+
+    <!-- Why Join Us -->
+    <section class="bg-white/5 p-6 rounded-lg max-w-4xl mx-auto">
+      <h2 class="text-2xl font-semibold text-white mb-3">Why Join Us?</h2>
+      <p class="text-[#b4c4f8] mb-4">
+        Get involved, contribute to projects, and make a real difference.
+      </p>
+
+      <!-- Volunteer Section -->
+      <div class="bg-white/10 p-4 rounded-lg space-y-3">
+        <h3 class="text-xl font-semibold text-white">Volunteer Opportunities</h3>
+        <p class="text-[#b4c4f8]">We welcome volunteers to help with research, events, and outreach.</p>
+        
+        <!-- Volunteer hours spreadsheet -->
         <div>
-          <h2 class="text-2xl font-semibold mb-2">Our Constitution</h2>
-          <p class="text-[#b4c4f8]">[Upload your constitution here]</p>
+          <p class="text-[#b4c4f8] mb-1">Track your volunteer hours:</p>
+          <a href="/assets/docs/volunteer-hours.xlsx" class="inline-block px-3 py-1 bg-[#4e65cb] rounded hover:bg-[#3b4db0] transition" target="_blank">
+            Download Spreadsheet
+          </a>
         </div>
 
+        <!-- Registration form -->
         <div>
-          <h2 class="text-2xl font-semibold mb-2">Mission & Global Impact</h2>
-          <p class="text-[#b4c4f8]">Mercuri aims to advance neuroscience and innovation while fostering global collaboration.</p>
-        </div>
-
-        <div>
-          <h2 class="text-2xl font-semibold mb-2">Our Story</h2>
-          <p class="text-[#b4c4f8]">Mercuri was founded to bring students together in a community exploring science and creativity.</p>
-        </div>
-
-        <div>
-          <h2 class="text-2xl font-semibold mb-2">Why Join Us?</h2>
-          <ul class="list-disc list-inside text-[#b4c4f8] space-y-2">
-            <li>Volunteer Opportunities
-              <ul class="list-disc list-inside ml-6 space-y-1">
-                <li>[Upload volunteer hours spreadsheet]</li>
-                <li>[Upload registration form]</li>
-              </ul>
-            </li>
-          </ul>
+          <p class="text-[#b4c4f8] mb-1">Register to volunteer:</p>
+          <!-- Placeholder: embed if possible or link -->
+          <a href="/assets/docs/volunteer-registration.pdf" class="inline-block px-3 py-1 bg-[#4e65cb] rounded hover:bg-[#3b4db0] transition" target="_blank">
+            Registration Form
+          </a>
         </div>
       </div>
+
     </section>
+
   </main>
 
   <!-- Footer -->
   <div id="footer"></div>
 
-  <script src="assets/js/script.js" defer></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", function() {
-      async function loadComponent(id, file) {
-        const el = document.getElementById(id);
-        if (el) {
-          const res = await fetch("components/" + file);
-          el.innerHTML = await res.text();
-        }
-      }
-      loadComponent("navbar", "navbar.html");
-      loadComponent("footer", "footer.html");
-    });
-  </script>
+  <!-- Script -->
+  <script src="/assets/js/script.js" defer></script>
 </body>
 </html>

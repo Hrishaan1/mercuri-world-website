@@ -1,7 +1,13 @@
 // Global JS for Mercuri site
-// Handles smooth scroll, navbar toggle, active links, sticky navbar, and component loading
+// - Smooth scroll for anchor links
+// - Active link highlighting
+// - Mobile menu toggle
+// - Navbar sticky blur on scroll
+// - Placeholder dynamic data
+// - Component loading (navbar & footer)
 
 (function(){
+  // Helpers
   const $ = (sel, ctx=document) => ctx.querySelector(sel);
   const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
@@ -29,26 +35,35 @@
     if(!toggle || !mobileMenu) return;
 
     toggle.addEventListener('click', function(){
+      mobileMenu.classList.toggle('show');
       mobileMenu.classList.toggle('hidden');
       openIcon.classList.toggle('hidden');
       closeIcon.classList.toggle('hidden');
     });
 
+    // Close when clicking a mobile link
     $$('.mobile-link').forEach(link=> link.addEventListener('click', ()=>{
       mobileMenu.classList.add('hidden');
+      mobileMenu.classList.remove('show');
       openIcon.classList.remove('hidden');
       closeIcon.classList.add('hidden');
     }));
   }
 
-  // Highlight active links
+  // Active link highlighting based on current path
   function initActiveLinks(){
-    const path = window.location.pathname.split("/").pop() || 'index.html';
+    const path = window.location.pathname.replace(/\/index.html$/,'/');
     const links = $$('.nav-link').concat($$('.mobile-link'));
     links.forEach(link=>{
-      const href = link.getAttribute('href');
-      if(href === path) link.classList.add('active');
-      else link.classList.remove('active');
+      try{
+        const href = new URL(link.href);
+        const linkPath = href.pathname;
+        if(linkPath === path || (linkPath === '/' && (path === '/' || path === '')) ){
+          link.classList.add('active');
+        } else {
+          link.classList.remove('active');
+        }
+      }catch(e){ /* ignore invalid hrefs */ }
     });
   }
 
@@ -64,25 +79,39 @@
     window.addEventListener('scroll', onScroll, {passive:true});
   }
 
-  // Load navbar/footer components
+  // Placeholder dynamic data function
+  function fetchLiveCounts(){
+    // Example placeholder, returns random number for demo
+    return Promise.resolve({members: Math.floor(Math.random()*1200)});
+  }
+
+  // Load HTML component
   async function loadComponent(id, file){
     const el = document.getElementById(id);
     if(el){
-      const res = await fetch("components/" + file);
-      el.innerHTML = await res.text();
-      // Init JS after component is loaded
-      if(id === 'navbar'){
-        initMobileMenu();
-        initActiveLinks();
-        initNavbarScroll();
-      }
+      const response = await fetch(`/components/${file}`);
+      el.innerHTML = await response.text();
     }
   }
 
-  document.addEventListener('DOMContentLoaded', function(){
+  // Initialize everything after DOM and components loaded
+  document.addEventListener("DOMContentLoaded", async () => {
+    // Load components
+    await loadComponent("navbar", "navbar.html");
+    await loadComponent("footer", "footer.html");
+
+    // Initialize after navbar exists in DOM
+    initMobileMenu();
     initSmoothScroll();
-    loadComponent("navbar", "navbar.html");
-    loadComponent("footer", "footer.html");
+    initActiveLinks();
+    initNavbarScroll();
+
+    // Placeholder dynamic data example
+    fetchLiveCounts().then(data=>{
+      const memberCounter = document.getElementById('member-counter');
+      if(memberCounter) memberCounter.textContent = data.members;
+      console.debug('Live counts (placeholder):', data);
+    }).catch(()=>{});
   });
 
 })();
