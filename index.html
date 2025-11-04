@@ -14,6 +14,35 @@
   <!-- Custom CSS -->
   <link rel="stylesheet" href="/assets/css/styles.css">
 
+  <style>
+    .chat-message {
+      animation: slideIn 0.3s ease-out;
+    }
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    #chat-messages::-webkit-scrollbar {
+      width: 8px;
+    }
+    #chat-messages::-webkit-scrollbar-track {
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+    }
+    #chat-messages::-webkit-scrollbar-thumb {
+      background: rgba(78, 101, 203, 0.5);
+      border-radius: 4px;
+    }
+    #chat-messages::-webkit-scrollbar-thumb:hover {
+      background: rgba(78, 101, 203, 0.7);
+    }
+  </style>
 </head>
 <body class="min-h-screen bg-[#070B34] text-white">
 
@@ -93,21 +122,194 @@
           <p class="text-sm mt-2">Embed external form here. <a href="#" class="text-[#4e65cb] underline">Add form</a></p>
         </div>
 
-        <!-- AI Assistant Placeholder -->
+        <!-- AI Assistant -->
         <div class="p-6 rounded-lg bg-white/5 text-center">
           <h3 class="text-sm">AI Chat Assistant</h3>
-          <button class="mt-3 px-4 py-2 rounded bg-[#4e65cb] text-white">Open (Coming Soon)</button>
+          <button id="open-ai-chat" class="mt-3 px-4 py-2 rounded bg-[#4e65cb] text-white hover:bg-[#3b4db0] transition">Open Chat</button>
         </div>
 
       </aside>
     </section>
   </main>
 
+  <!-- AI Chat Modal -->
+  <div id="ai-chat-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center opacity-0 scale-95 pointer-events-none transition-all duration-300 z-50 p-4">
+    <div class="bg-[#070B34] rounded-lg w-full max-w-2xl h-[600px] flex flex-col relative transform transition-transform duration-300 border border-white/10">
+      
+      <!-- Header -->
+      <div class="flex items-center justify-between p-4 border-b border-white/10">
+        <div class="flex items-center space-x-3">
+          <div class="w-10 h-10 rounded-full bg-gradient-to-br from-[#4e65cb] to-[#6B4984] flex items-center justify-center">
+            <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"></path>
+            </svg>
+          </div>
+          <div>
+            <h3 class="text-lg font-semibold text-white">Mercuri AI Assistant</h3>
+            <p class="text-xs text-[#b4c4f8]">Ask me anything about neuroscience!</p>
+          </div>
+        </div>
+        <button id="close-ai-chat" class="text-white hover:text-[#b4c4f8] text-2xl transition">✕</button>
+      </div>
+
+      <!-- Messages Container -->
+      <div id="chat-messages" class="flex-1 overflow-y-auto p-4 space-y-4">
+        <div class="chat-message flex items-start space-x-3">
+          <div class="w-8 h-8 rounded-full bg-gradient-to-br from-[#4e65cb] to-[#6B4984] flex-shrink-0 flex items-center justify-center">
+            <svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path>
+            </svg>
+          </div>
+          <div class="bg-white/5 rounded-lg px-4 py-3 max-w-[80%]">
+            <p class="text-sm text-white">Hello! I'm your Mercuri AI assistant. I can help answer questions about neuroscience, our club, and more. How can I help you today?</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Input Area -->
+      <div id="chat-input-area" class="p-4 border-t border-white/10">
+        <div class="flex space-x-2">
+          <input 
+            type="text" 
+            id="chat-input" 
+            placeholder="Type your message..." 
+            class="flex-1 px-4 py-3 bg-[#141852] border border-white/10 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#4e65cb]"
+          />
+          <button id="send-message" class="px-6 py-3 bg-[#4e65cb] text-white rounded-lg hover:bg-[#3b4db0] transition font-medium">
+            Send
+          </button>
+        </div>
+      </div>
+
+      <!-- Loading Indicator -->
+      <div id="loading-indicator" class="hidden p-4 border-t border-white/10">
+        <div class="flex items-center space-x-2 text-[#b4c4f8]">
+          <div class="animate-spin rounded-full h-4 w-4 border-2 border-[#4e65cb] border-t-transparent"></div>
+          <span class="text-sm">AI is thinking...</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- Footer -->
   <div id="footer"></div>
 
   <!-- Script -->
   <script src="/assets/js/script.js" defer></script>
+  
+  <!-- AI Chat Script -->
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const modal = document.getElementById('ai-chat-modal');
+      const openBtn = document.getElementById('open-ai-chat');
+      const closeBtn = document.getElementById('close-ai-chat');
+      const chatMessages = document.getElementById('chat-messages');
+      const chatInput = document.getElementById('chat-input');
+      const sendBtn = document.getElementById('send-message');
+      const chatInputArea = document.getElementById('chat-input-area');
+      const loadingIndicator = document.getElementById('loading-indicator');
+
+      let conversationHistory = [];
+
+      // Open/Close modal
+      openBtn.addEventListener('click', function() {
+        modal.classList.remove('pointer-events-none', 'opacity-0', 'scale-95');
+        modal.classList.add('opacity-100', 'scale-100');
+        chatInput.focus();
+      });
+
+      closeBtn.addEventListener('click', closeModal);
+      modal.addEventListener('click', function(e) {
+        if (e.target === modal) closeModal();
+      });
+
+      function closeModal() {
+        modal.classList.add('opacity-0', 'scale-95');
+        modal.classList.remove('opacity-100', 'scale-100');
+        setTimeout(() => modal.classList.add('pointer-events-none'), 300);
+      }
+
+      // Add message to chat
+      function addMessage(content, isUser = false) {
+        const messageDiv = document.createElement('div');
+        messageDiv.className = `chat-message flex items-start space-x-3 ${isUser ? 'flex-row-reverse space-x-reverse' : ''}`;
+        
+        const avatar = document.createElement('div');
+        avatar.className = `w-8 h-8 rounded-full flex-shrink-0 flex items-center justify-center ${
+          isUser ? 'bg-[#6B4984]' : 'bg-gradient-to-br from-[#4e65cb] to-[#6B4984]'
+        }`;
+        avatar.innerHTML = isUser 
+          ? '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>'
+          : '<svg class="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>';
+        
+        const bubble = document.createElement('div');
+        bubble.className = `rounded-lg px-4 py-3 max-w-[80%] ${
+          isUser ? 'bg-[#4e65cb]' : 'bg-white/5'
+        }`;
+        bubble.innerHTML = `<p class="text-sm text-white whitespace-pre-wrap">${content}</p>`;
+        
+        messageDiv.appendChild(avatar);
+        messageDiv.appendChild(bubble);
+        chatMessages.appendChild(messageDiv);
+        chatMessages.scrollTop = chatMessages.scrollHeight;
+      }
+
+      // Send message to backend API
+      async function sendMessage() {
+        const message = chatInput.value.trim();
+        if (!message) return;
+
+        // Add user message
+        addMessage(message, true);
+        chatInput.value = '';
+        conversationHistory.push({ role: 'user', content: message });
+
+        // Show loading
+        loadingIndicator.classList.remove('hidden');
+        chatInputArea.classList.add('hidden');
+
+        try {
+          // Replace this URL with your actual backend endpoint
+          const response = await fetch('/api/chat', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              messages: conversationHistory
+            })
+          });
+
+          if (!response.ok) {
+            throw new Error(`API error: ${response.status}`);
+          }
+
+          const data = await response.json();
+          const aiMessage = data.message || data.response;
+          
+          conversationHistory.push({ role: 'assistant', content: aiMessage });
+          addMessage(aiMessage, false);
+
+        } catch (error) {
+          console.error('Error:', error);
+          addMessage('Sorry, I encountered an error connecting to the server. Please try again later.', false);
+        } finally {
+          loadingIndicator.classList.add('hidden');
+          chatInputArea.classList.remove('hidden');
+          chatInput.focus();
+        }
+      }
+
+      // Event listeners
+      sendBtn.addEventListener('click', sendMessage);
+      chatInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+          e.preventDefault();
+          sendMessage();
+        }
+      });
+    });
+  </script>
 
 </body>
 </html>
