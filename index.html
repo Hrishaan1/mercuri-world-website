@@ -125,6 +125,7 @@
         <!-- AI Assistant -->
         <div class="p-6 rounded-lg bg-white/5 text-center">
           <h3 class="text-sm">AI Chat Assistant</h3>
+          <p class="text-sm text-[#b4c4f8]">Chat currently is inoperational</p>
           <button id="open-ai-chat" class="mt-3 px-4 py-2 rounded bg-[#4e65cb] text-white hover:bg-[#3b4db0] transition">Open Chat</button>
         </div>
 
@@ -269,8 +270,9 @@
         chatInputArea.classList.add('hidden');
 
         try {
-          // Replace this URL with your actual backend endpoint
-          const response = await fetch('/api/chat', {
+          console.log('Sending message to backend...');
+          
+          const response = await fetch('http://localhost:3000/api/chat', {
             method: 'POST',
             headers: {
               'Content-Type': 'application/json',
@@ -280,19 +282,42 @@
             })
           });
 
+          console.log('Response status:', response.status);
+
           if (!response.ok) {
-            throw new Error(`API error: ${response.status}`);
+            const errorData = await response.json().catch(() => ({}));
+            console.error('API error:', errorData);
+            throw new Error(`Server returned ${response.status}: ${errorData.error || 'Unknown error'}`);
           }
 
           const data = await response.json();
+          console.log('Received response:', data);
+          
           const aiMessage = data.message || data.response;
+          
+          if (!aiMessage) {
+            throw new Error('No message in response');
+          }
           
           conversationHistory.push({ role: 'assistant', content: aiMessage });
           addMessage(aiMessage, false);
 
         } catch (error) {
-          console.error('Error:', error);
-          addMessage('Sorry, I encountered an error connecting to the server. Please try again later.', false);
+          console.error('Full error details:', error);
+          
+          let errorMessage = 'Sorry, I encountered an error. ';
+          
+          if (error.message.includes('Failed to fetch')) {
+            errorMessage += 'Cannot connect to server. Make sure the server is running on http://localhost:3000';
+          } else if (error.message.includes('500')) {
+            errorMessage += 'Server error. Check that your OpenAI API key is configured correctly in the .env file.';
+          } else if (error.message.includes('401')) {
+            errorMessage += 'Authentication failed. Your OpenAI API key may be invalid.';
+          } else {
+            errorMessage += error.message;
+          }
+          
+          addMessage(errorMessage, false);
         } finally {
           loadingIndicator.classList.add('hidden');
           chatInputArea.classList.remove('hidden');
