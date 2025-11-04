@@ -1,13 +1,7 @@
 // Global JS for Mercuri site
-// - Smooth scroll for anchor links
-// - Active link highlighting
-// - Mobile menu toggle
-// - Navbar sticky blur on scroll
-// - Placeholder dynamic data
-// - Component loading (navbar & footer)
+// Handles smooth scroll, navbar toggle, active links, sticky navbar, and component loading
 
 (function(){
-  // Helpers
   const $ = (sel, ctx=document) => ctx.querySelector(sel);
   const $$ = (sel, ctx=document) => Array.from(ctx.querySelectorAll(sel));
 
@@ -35,35 +29,26 @@
     if(!toggle || !mobileMenu) return;
 
     toggle.addEventListener('click', function(){
-      mobileMenu.classList.toggle('show');
       mobileMenu.classList.toggle('hidden');
       openIcon.classList.toggle('hidden');
       closeIcon.classList.toggle('hidden');
     });
 
-    // Close when clicking a mobile link
     $$('.mobile-link').forEach(link=> link.addEventListener('click', ()=>{
       mobileMenu.classList.add('hidden');
-      mobileMenu.classList.remove('show');
       openIcon.classList.remove('hidden');
       closeIcon.classList.add('hidden');
     }));
   }
 
-  // Active link highlighting based on current path
+  // Highlight active links
   function initActiveLinks(){
-    const path = window.location.pathname.replace(/\/index.html$/,'/');
+    const path = window.location.pathname.split("/").pop() || 'index.html';
     const links = $$('.nav-link').concat($$('.mobile-link'));
     links.forEach(link=>{
-      try{
-        const href = new URL(link.href);
-        const linkPath = href.pathname;
-        if(linkPath === path || (linkPath === '/' && (path === '/' || path === '')) ){
-          link.classList.add('active');
-        } else {
-          link.classList.remove('active');
-        }
-      }catch(e){ /* ignore invalid hrefs */ }
+      const href = link.getAttribute('href');
+      if(href === path) link.classList.add('active');
+      else link.classList.remove('active');
     });
   }
 
@@ -79,39 +64,25 @@
     window.addEventListener('scroll', onScroll, {passive:true});
   }
 
-  // Placeholder dynamic data function
-  function fetchLiveCounts(){
-    // Example placeholder, returns random number for demo
-    return Promise.resolve({members: Math.floor(Math.random()*1200)});
-  }
-
-  // Load HTML component
+  // Load navbar/footer components
   async function loadComponent(id, file){
     const el = document.getElementById(id);
     if(el){
-      const response = await fetch(`/components/${file}`);
-      el.innerHTML = await response.text();
+      const res = await fetch("components/" + file);
+      el.innerHTML = await res.text();
+      // Init JS after component is loaded
+      if(id === 'navbar'){
+        initMobileMenu();
+        initActiveLinks();
+        initNavbarScroll();
+      }
     }
   }
 
-  // Initialize everything after DOM and components loaded
-  document.addEventListener("DOMContentLoaded", async () => {
-    // Load components
-    await loadComponent("navbar", "navbar.html");
-    await loadComponent("footer", "footer.html");
-
-    // Initialize after navbar exists in DOM
-    initMobileMenu();
+  document.addEventListener('DOMContentLoaded', function(){
     initSmoothScroll();
-    initActiveLinks();
-    initNavbarScroll();
-
-    // Placeholder dynamic data example
-    fetchLiveCounts().then(data=>{
-      const memberCounter = document.getElementById('member-counter');
-      if(memberCounter) memberCounter.textContent = data.members;
-      console.debug('Live counts (placeholder):', data);
-    }).catch(()=>{});
+    loadComponent("navbar", "navbar.html");
+    loadComponent("footer", "footer.html");
   });
 
 })();
