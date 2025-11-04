@@ -3,91 +3,51 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>Mercuri — Contact / Socials</title>
-
-  <!-- Google Fonts -->
+  <title>Mercuri — Contact</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-
-  <!-- Custom CSS -->
-  <link rel="stylesheet" href="/assets/css/styles.css">
+  <link rel="stylesheet" href="assets/css/styles.css">
 </head>
 <body class="min-h-screen flex flex-col bg-[#070B34] text-white">
 
-  <!-- Navbar -->
   <div id="navbar"></div>
 
-  <main class="flex-grow pt-20 container-max space-y-16 px-4">
+  <main class="flex-grow pt-20 container-max px-4 space-y-12 max-w-4xl mx-auto">
+    <h1 class="text-4xl font-bold text-center mb-8">Contact / Socials</h1>
 
-    <!-- Hero Section -->
-    <section class="text-center py-12">
-      <h1 class="text-4xl font-bold mb-4">Contact Us</h1>
-      <p class="text-[#b4c4f8] max-w-3xl mx-auto">
-        We'd love to hear from you! Reach out with questions, collaboration ideas, or feedback.
-      </p>
+    <section class="space-y-6">
+      <h2 class="text-2xl font-semibold">Send Us a Message</h2>
+      <form class="space-y-4 bg-white/5 p-6 rounded-lg">
+        <input type="text" placeholder="Name" class="w-full p-2 rounded bg-white/10 text-white">
+        <input type="email" placeholder="Email" class="w-full p-2 rounded bg-white/10 text-white">
+        <textarea placeholder="Message" class="w-full p-2 rounded bg-white/10 text-white"></textarea>
+        <button type="submit" class="bg-[#4e65cb] px-4 py-2 rounded text-white">Send</button>
+      </form>
+
+      <h2 class="text-2xl font-semibold">Socials</h2>
+      <ul class="space-y-2 text-[#b4c4f8]">
+        <li><a href="#" class="hover:text-white">Instagram</a></li>
+        <li><a href="#" class="hover:text-white">TikTok</a></li>
+        <li><a href="#" class="hover:text-white">Email</a></li>
+      </ul>
     </section>
-
-    <!-- Contact Form & Socials -->
-    <section class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-12">
-
-      <!-- Contact Form -->
-      <div class="bg-white/5 p-8 rounded-lg space-y-4">
-        <h2 class="text-2xl font-semibold mb-4 text-white">Send us a message</h2>
-        <form id="contact-form" class="space-y-4">
-          <div>
-            <label for="name" class="block text-sm text-[#b4c4f8]">Name</label>
-            <input type="text" id="name" name="name" class="w-full mt-1 p-2 rounded bg-[#141852] border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-[#4e65cb]" placeholder="Your Name" required>
-          </div>
-          <div>
-            <label for="email" class="block text-sm text-[#b4c4f8]">Email</label>
-            <input type="email" id="email" name="email" class="w-full mt-1 p-2 rounded bg-[#141852] border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-[#4e65cb]" placeholder="your@email.com" required>
-          </div>
-          <div>
-            <label for="message" class="block text-sm text-[#b4c4f8]">Message</label>
-            <textarea id="message" name="message" rows="5" class="w-full mt-1 p-2 rounded bg-[#141852] border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-[#4e65cb]" placeholder="Your message here..." required></textarea>
-          </div>
-          <button type="submit" class="px-6 py-2 rounded bg-[#4e65cb] hover:bg-[#3b4db0] transition text-white font-semibold">Send Message</button>
-        </form>
-      </div>
-
-      <!-- Socials & Info -->
-      <div class="bg-white/5 p-8 rounded-lg space-y-6 text-center md:text-left">
-        <h2 class="text-2xl font-semibold text-white mb-4">Connect with us</h2>
-
-        <div class="flex flex-col md:flex-row justify-center md:justify-start gap-4 md:gap-6 text-lg">
-          <a href="#" class="social-link hover:text-[#4e65cb] transition font-medium">Instagram</a>
-          <a href="#" class="social-link hover:text-[#4e65cb] transition font-medium">TikTok</a>
-          <a href="#" class="social-link hover:text-[#4e65cb] transition font-medium">LinkedIn</a>
-        </div>
-
-        <div class="mt-6 text-[#b4c4f8]">
-          <p><strong>Email:</strong> info@mercuriworld.org</p>
-          <p><strong>Phone:</strong> (123) 456-7890</p>
-          <p class="mt-4">Location: [Insert Map or Address]</p>
-        </div>
-      </div>
-
-    </section>
-
   </main>
 
-  <!-- Footer -->
   <div id="footer"></div>
 
-  <!-- Scripts -->
-  <script src="/assets/js/script.js" defer></script>
+  <script src="assets/js/script.js" defer></script>
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      const form = document.getElementById('contact-form');
-      form.addEventListener('submit', function(e) {
-        e.preventDefault();
-        alert('Thanks for reaching out! (Form submission placeholder)');
-        form.reset();
-      });
+    document.addEventListener("DOMContentLoaded", function() {
+      async function loadComponent(id, file) {
+        const el = document.getElementById(id);
+        if (el) {
+          const res = await fetch("components/" + file);
+          el.innerHTML = await res.text();
+        }
+      }
+      loadComponent("navbar", "navbar.html");
+      loadComponent("footer", "footer.html");
     });
   </script>
-
 </body>
 </html>
