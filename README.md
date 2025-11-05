@@ -93,6 +93,7 @@ open index.html
 
 ## 👤 Author
 
-**Mercuri World Team**
-Website designed and developed using HTML, TailwindCSS, and JavaScript
+<center>**Mercuri.World - AFHS**</center>
+
+<center>Website designed and developed using HTML, TailwindCSS, and JavaScript</center>
 
