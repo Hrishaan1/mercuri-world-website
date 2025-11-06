@@ -4,7 +4,7 @@ A modern, responsive multi-page website for **Mercuri World**, a neuroscience an
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ``` shell
 mercuri-world-website
@@ -17,7 +17,16 @@ mercuri-world-website
 │   ├── footer.html
 │   └── navbar.html  
 ├── template/
-│    └── template.html
+│   └── template.html
+├── server/
+│   ├── node_modules/
+│   │   └── ...
+│   ├── .env
+│   ├── .env.example
+│   ├── package-lock.json
+│   ├── package.json
+│   ├── server.js
+│   └── SETUP_GUIDE.md
 ├── about.html
 ├── blog.html
 ├── contact.html
@@ -30,7 +39,7 @@ mercuri-world-website
 
 ---
 
-## 🛠 Features
+## Features
 
 - **Responsive Design**: Works on desktop, tablet, and mobile using TailwindCSS.
 - **Dark Theme**: Consistent dark background with accent colors (`#4e65cb` & `#b4c4f8`)
@@ -49,7 +58,7 @@ mercuri-world-website
 
 ---
 
-## ⚡ JavaScript Features
+## JavaScript Features
 
 - Smooth scroll for in-page anchors.
 - Mobile menu toggle.
@@ -60,7 +69,7 @@ mercuri-world-website
 
 ---
 
-## 📦 Installation / Usage
+## Installation / Usage
 
 1. Clone the repository:
 
@@ -76,14 +85,14 @@ open index.html
 
 ---
 
-## 🖌 Styling
+## Styling
 - **TailwindCSS** is used via CDN.
 - Custom CSS available in ```assets/css/styles.css``` for additional styling.
 - consistend dark theme and accent colors. 
 
 ---
 
-## 📌 Notes / Future Improvements
+## Notes / Future Improvements
 - Integrate **backend** for contact form submissions.
 - Replace ```<span>``` placeholders with actual images/videos/resources. 
 - Add filtering and search functionality for **Blog** and **Resources**
@@ -91,7 +100,7 @@ open index.html
 
 ---
 
-## 👤 Author
+## Author
 
 **Mercuri.World - AFHS**
 
