@@ -7,12 +7,14 @@ A modern, responsive multi-page website for **Mercuri World**, a neuroscience an
 ## Project Structure
 
 ``` shell
-mercuri-world-website
+mercuri-world-website/
 ├── assets/
 │   ├── css
 │   │   └── styles.css
-│   └── js
-│       └── script.js
+│   ├── js/
+│   │   └── script.js
+│   └── images/
+│       └── hero.png
 ├── components/
 │   ├── footer.html
 │   └── navbar.html  
