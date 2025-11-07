@@ -22,11 +22,14 @@
     particleSize: 2,
     particleColor: 'rgba(78, 101, 203, 0.6)', // #4e65cb with opacity
     particleColorHover: 'rgba(180, 196, 248, 0.8)', // #b4c4f8 with opacity
-    connectionDistance: 300,
+    baseConnectionDistance: 200, // Base connection distance for larger screens
     mouseInfluenceRadius: 200,
     speed: 0.3,
-    connectionOpacity: 0.25
+    connectionOpacity: 0.35
   };
+
+  // Dynamic connection distance based on screen size
+  let connectionDistance = CONFIG.baseConnectionDistance;
 
   let canvas, ctx;
   let particles = [];
@@ -135,6 +138,19 @@
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
     
+    // Calculate connection distance based on screen width
+    // Scales from 80px (small screens) to 150px (large screens)
+    const minDistance = 80;
+    const maxDistance = CONFIG.baseConnectionDistance;
+    const minWidth = 320;  // Small mobile
+    const maxWidth = 1920; // Large desktop
+    
+    const screenWidth = window.innerWidth;
+    const ratio = Math.min(Math.max((screenWidth - minWidth) / (maxWidth - minWidth), 0), 1);
+    connectionDistance = minDistance + (maxDistance - minDistance) * ratio;
+    
+    console.log(`Connection distance adjusted to: ${Math.round(connectionDistance)}px for screen width: ${screenWidth}px`);
+    
     // Reinitialize particles on resize
     particles = [];
     for (let i = 0; i < CONFIG.particleCount; i++) {
@@ -150,8 +166,8 @@
         const dy = particles[i].y - particles[j].y;
         const distance = Math.sqrt(dx * dx + dy * dy);
 
-        if (distance < CONFIG.connectionDistance) {
-          const opacity = CONFIG.connectionOpacity * (1 - distance / CONFIG.connectionDistance);
+        if (distance < connectionDistance) {
+          const opacity = CONFIG.connectionOpacity * (1 - distance / connectionDistance);
           ctx.strokeStyle = `rgba(78, 101, 203, ${opacity})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
