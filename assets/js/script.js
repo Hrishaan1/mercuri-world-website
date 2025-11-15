@@ -79,12 +79,6 @@
     window.addEventListener('scroll', onScroll, {passive:true});
   }
 
-  // Placeholder dynamic data function
-  function fetchLiveCounts(){
-    // Example placeholder, returns random number for demo
-    return Promise.resolve({members: Math.floor(Math.random()*1200)});
-  }
-
   // Load HTML component
   async function loadComponent(id, file){
     const el = document.getElementById(id);

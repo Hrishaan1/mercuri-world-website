@@ -8,35 +8,37 @@ A modern, responsive multi-page website for **Mercuri World**, a neuroscience an
 
 ``` shell
 mercuri-world-website/
-├── assets/
-│   ├── css
-│   │   └── styles.css
-│   ├── js/
-│   │   └── script.js
-│   └── images/
-│       └── hero.png
-├── components/
-│   ├── footer.html
-│   └── navbar.html  
-├── template/
-│   └── template.html
-├── server/
+├── assets/                # Assets folder
+│   ├── css                # CSS folder
+│   │   └── styles.css     # Centralized CSS file
+│   ├── js/                # JavaScript folder 
+│   │   ├── particles.js   # Particle JavaScript file
+│   │   └── script.js      # Main JavaScript file   
+│   └── images/            # image folder
+│       └── hero.png       # club logo
+├── components/            # components folder
+│   ├── footer.html        # Footer
+│   └── navbar.html        # Navbar
+├── template/              # Template folder
+│   └── template.html      # Basic template for pages
+├── server/                # Server related things
 │   ├── node_modules/
 │   │   └── ...
 │   ├── .env
 │   ├── .env.example
 │   ├── package-lock.json
-│   ├── package.json
-│   ├── server.js
-│   └── SETUP_GUIDE.md
-├── about.html
-├── blog.html
-├── contact.html
-├── index.html
-├── projects.html
-├── resources.html
-├── team.html
-└── README.md
+│   ├── package.json       
+│   ├── server.js          # JavaScript program for the server
+│   └── SETUP_GUIDE.md     # Setup guide for AI assistant 
+├── .gitignore             # .gitignore file
+├── about.html             # About page
+├── blog.html              # Blog page
+├── contact.html           # Contact page
+├── index.html             # Home page
+├── projects.html          # Projects page
+├── resources.html         # Resources page
+├── team.html              # Team page
+└── README.md              # This document
 ```
 
 ---
