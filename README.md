@@ -1,6 +1,6 @@
 # Mercuri World Website
 
-A modern, responsive multi-page website for **Mercuri World**, a neuroscience and innovation club, built with **HTML**, **TailwindCSS**, and minimal JavaScript. The website is designed to showcase the club's mission, team, blog, resources, and contact information.
+A modern, responsive multi-page website for **Mercuri World AFHS**, a neuroscience and innovation club, built with **HTML**, **TailwindCSS**, and minimal JavaScript. The website is designed to showcase the club's mission, team, blog, resources, and contact information.
 
 ---
 
@@ -15,7 +15,7 @@ mercuri-world-website/
 │   │   ├── particles.js   # Particle JavaScript file
 │   │   └── script.js      # Main JavaScript file   
 │   └── images/            # image folder
-│       └── hero.png       # club logo
+│       └── logo.png       # club logo
 ├── components/            # components folder
 │   ├── footer.html        # Footer
 │   └── navbar.html        # Navbar
