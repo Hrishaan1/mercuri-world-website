@@ -1,5 +1,10 @@
 # Mercuri World Website
 
+[![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)](https://developer.mozilla.org/en-US/docs/Web/HTML)
+[![TailwindCSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
+[![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
+[![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://opensource.org/licenses/MIT)
+
 A modern, responsive multi-page website for **Mercuri World AFHS**, a neuroscience and innovation club, built with **HTML**, **TailwindCSS**, and minimal JavaScript. The website is designed to showcase the club's mission, team, blog, resources, and contact information.
 
 ---
@@ -58,13 +63,16 @@ mercuri-world-website/
     - **Projects**: Past and upcoming projects with modal previews.
     - **Blog**: Categorized monthly blog posts with year. 
     - **Resources**: Grid of PDFs, guides, and other materials.
-    - **Contact**: Contact form and social links with hover effects.
+    - **Contact**: Working contact form and social links with hover effects.
+- **Dynamic Background**:
+    - Dots are scattered around the background of the website
+    - Dots form faint lines when near another do
 
 ---
 
 ## JavaScript Features
 
-- Smooth scroll for in-page anchors.
+- Smooth scroll for in-page anchors. <!-- 67 -->
 - Mobile menu toggle.
 - Active link highlighting in navbar.
 - Navbar sticky blur effect on scroll.
@@ -83,7 +91,7 @@ git clone https://github.com/Hrishaan1/mercuri-world-website.git
 
 2. Open any HTML file in a browser:
 ```bash
-cd mercuri-world-browser
+cd mercuri-world-website
 open index.html
 ```
 
@@ -97,12 +105,15 @@ open index.html
 ---
 
 ## Notes / Future Improvements
-- Integrate **backend** for contact form submissions.
 - Replace ```<span>``` placeholders with actual images/videos/resources. 
-- Add filtering and search functionality for **Blog** and **Resources**
 - Consider accessibility improvements (ARIA roles, keyboard navigation).
 
 ---
+
+## Deployment
+- Currently deployed under ```https://mercuri-world-website.vercel.app```
+    - Deployed with Vercel - a free web hosting platform that allows you to easily host your website straight from your GitHub repo
+- Will be deployed with actual domain in the future
 
 ## Author
 
