@@ -120,7 +120,7 @@
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.pointerEvents = 'none';
-    canvas.style.zIndex = '0';
+    canvas.style.zIndex = '-1';
     canvas.style.opacity = '0';
     canvas.style.transition = 'opacity 0.5s ease';
     
