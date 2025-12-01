@@ -1,3 +1,4 @@
+// assets/js/script.js
 // Global JS for Mercuri site
 // - Smooth scroll for anchor links
 // - Active link highlighting
