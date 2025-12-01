@@ -20,6 +20,12 @@ mercuri-world-website/
 │   │   ├── particles.js   # Particle JavaScript file
 │   │   └── script.js      # Main JavaScript file   
 │   └── images/            # image folder
+│       ├── ananya.png     # Ananya's photo   
+│       ├── anika.png      # Anika's photo
+│       ├── ardra.png      # Ardra's photo
+│       ├── hrishaan.png   # Hrishaan's photo
+│       ├── misha.png      # Misha's photo
+│       ├── yoshi.png      # Yoshi's photo
 │       └── logo.png       # club logo
 ├── components/            # components folder
 │   ├── footer.html        # Footer
