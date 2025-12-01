@@ -26,6 +26,9 @@ mercuri-world-website/
 │       ├── hrishaan.png   # Hrishaan's photo
 │       ├── misha.png      # Misha's photo
 │       ├── yoshi.png      # Yoshi's photo
+│       ├── harsha.png     # Harsha's photo
+│       ├── anya.png       # Anya's photo
+│       ├── aboli.png      # Aboli's photo
 │       └── logo.png       # club logo
 ├── components/            # components folder
 │   ├── footer.html        # Footer
