@@ -22,7 +22,7 @@
     particleSize: 2,
     particleColor: 'rgba(78, 101, 203, 0.6)', // #4e65cb with opacity
     particleColorHover: 'rgba(180, 196, 248, 0.8)', // #b4c4f8 with opacity
-    baseConnectionDistance: 200, // Base connection distance for larger screens
+    baseConnectionDistance: 150, // Base connection distance for larger screens
     mouseInfluenceRadius: 200,
     speed: 0.3,
     connectionOpacity: 0.35
@@ -38,24 +38,40 @@
 
   // Particle class
   class Particle {
-    constructor() {
-      this.reset();
+    constructor(isInitial = false) {
+      this.opacity = isInitial ? 1 : 0; // Start invisible for new particles
+      this.targetOpacity = 1;
+      this.reset(isInitial);
       // Random initial position
       this.x = Math.random() * canvas.width;
       this.y = Math.random() * canvas.height;
     }
 
-    reset() {
+    reset(isInitial = false) {
       this.baseX = Math.random() * canvas.width;
       this.baseY = Math.random() * canvas.height;
-      this.x = this.baseX;
-      this.y = this.baseY;
+      
+      // Start at base position instead of random position on reset
+      if (!isInitial) {
+        this.x = this.baseX;
+        this.y = this.baseY;
+        this.opacity = 0;
+        this.targetOpacity = 1;
+      }
+      
       this.vx = (Math.random() - 0.5) * CONFIG.speed;
       this.vy = (Math.random() - 0.5) * CONFIG.speed;
       this.size = Math.random() * CONFIG.particleSize + 1;
     }
 
     update() {
+      // Fade in/out animation
+      if (this.opacity < this.targetOpacity) {
+        this.opacity += 0.02; // Gradual fade in
+      } else if (this.opacity > this.targetOpacity) {
+        this.opacity -= 0.02; // Gradual fade out
+      }
+
       // Mouse interaction - repel particles
       if (mouse.x != null && mouse.y != null) {
         const dx = mouse.x - this.x;
@@ -103,7 +119,9 @@
         }
       }
 
-      ctx.fillStyle = color;
+      // Apply opacity to color
+      const colorWithOpacity = color.replace(/[\d.]+\)$/, `${this.opacity * parseFloat(color.match(/[\d.]+\)$/)[0])})`);
+      ctx.fillStyle = colorWithOpacity;
       ctx.beginPath();
       ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
       ctx.fill();
@@ -120,7 +138,7 @@
     canvas.style.width = '100%';
     canvas.style.height = '100%';
     canvas.style.pointerEvents = 'none';
-    canvas.style.zIndex = '-1';
+    canvas.style.zIndex = '0';
     canvas.style.opacity = '0';
     canvas.style.transition = 'opacity 0.5s ease';
     
@@ -151,11 +169,18 @@
     
     console.log(`Connection distance adjusted to: ${Math.round(connectionDistance)}px for screen width: ${screenWidth}px`);
     
-    // Reinitialize particles on resize
-    particles = [];
-    for (let i = 0; i < CONFIG.particleCount; i++) {
-      particles.push(new Particle());
-    }
+    // Fade out existing particles
+    particles.forEach(particle => {
+      particle.targetOpacity = 0;
+    });
+    
+    // Wait for fade out, then reinitialize
+    setTimeout(() => {
+      particles = [];
+      for (let i = 0; i < CONFIG.particleCount; i++) {
+        particles.push(new Particle(false)); // false = fade in gradually
+      }
+    }, 500);
   }
 
   // Draw connections between nearby particles
@@ -167,7 +192,9 @@
         const distance = Math.sqrt(dx * dx + dy * dy);
 
         if (distance < connectionDistance) {
-          const opacity = CONFIG.connectionOpacity * (1 - distance / connectionDistance);
+          // Apply particle opacity to connection lines
+          const avgOpacity = (particles[i].opacity + particles[j].opacity) / 2;
+          const opacity = CONFIG.connectionOpacity * (1 - distance / connectionDistance) * avgOpacity;
           ctx.strokeStyle = `rgba(78, 101, 203, ${opacity})`;
           ctx.lineWidth = 1;
           ctx.beginPath();
@@ -267,6 +294,11 @@
       window.addEventListener('mousemove', handleMouseMove);
       window.addEventListener('mouseleave', handleMouseLeave);
       window.addEventListener('resize', resizeCanvas);
+      
+      // Initialize particles with full opacity for first load
+      for (let i = 0; i < CONFIG.particleCount; i++) {
+        particles.push(new Particle(true)); // true = start visible
+      }
     }
     canvas.style.display = 'block';
     canvas.style.opacity = '1';
